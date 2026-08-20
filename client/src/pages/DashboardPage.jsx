@@ -108,13 +108,22 @@ export const DashboardPage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-4 shrink-0">
+                  <div className="flex items-center space-x-3 shrink-0">
                     <span className="text-xs font-bold text-slate-700">{modCompleted}/{modScenarios.length} Done</span>
+                    {modCompleted === modScenarios.length && (
+                      <Link
+                        to={`/completion?cert=${mod.id}`}
+                        className="inline-flex items-center space-x-1 px-2.5 py-1 bg-accent-gold/20 text-accent-gold-dark border border-accent-gold/40 rounded-lg text-xs font-extrabold hover:bg-accent-gold/30 transition-colors"
+                      >
+                        <Award className="w-3.5 h-3.5" />
+                        <span>Certificate</span>
+                      </Link>
+                    )}
                     <Link
                       to={`/training?module=${mod.id}`}
                       className="text-xs font-bold text-gov-600 hover:text-gov-800"
                     >
-                      View
+                      {modCompleted === modScenarios.length ? 'Review' : 'Continue'}
                     </Link>
                   </div>
                 </div>

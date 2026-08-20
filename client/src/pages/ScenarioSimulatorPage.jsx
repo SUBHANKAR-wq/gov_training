@@ -290,19 +290,91 @@ export const ScenarioSimulatorPage = () => {
           )}
 
           {activeReviewTab === 'prompt' && (
-            <PromptComparisonTable
-              userPrompt={prompt}
-              idealPrompt={scenario.ideal_prompt}
-              breakdown={fullEvaluation.prompt_breakdown}
-            />
+            <div className="space-y-6">
+              <PromptComparisonTable
+                userPrompt={prompt}
+                idealPrompt={scenario.ideal_prompt}
+                breakdown={fullEvaluation.prompt_breakdown}
+              />
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-200">
+                <button
+                  onClick={handleRetry}
+                  className="flex items-center space-x-2 bg-slate-100 hover:bg-slate-200 text-slate-800 px-5 py-3 rounded-xl text-sm font-bold transition-all w-full sm:w-auto justify-center"
+                >
+                  <RefreshCw className="w-4 h-4 text-slate-600" />
+                  <span>Improve My Prompt & Retry Scenario</span>
+                </button>
+                <div className="flex items-center space-x-3 w-full sm:w-auto justify-end">
+                  <Link
+                    to="/training"
+                    className="px-4 py-3 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"
+                  >
+                    All Modules
+                  </Link>
+                  {nextScenario ? (
+                    <button
+                      onClick={handleNextScenario}
+                      className="flex items-center space-x-2 bg-gov-600 hover:bg-gov-700 text-white px-6 py-3 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all"
+                    >
+                      <span>Next Scenario</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  ) : (
+                    <Link
+                      to="/completion"
+                      className="flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all"
+                    >
+                      <Award className="w-4 h-4" />
+                      <span>Claim Certificate</span>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
           )}
 
           {activeReviewTab === 'output' && (
-            <OutputComparisonTable
-              userOutput={output}
-              idealOutput={scenario.ideal_output}
-              breakdown={fullEvaluation.output_breakdown}
-            />
+            <div className="space-y-6">
+              <OutputComparisonTable
+                userOutput={output}
+                idealOutput={scenario.ideal_output}
+                breakdown={fullEvaluation.output_breakdown}
+              />
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-200">
+                <button
+                  onClick={handleRetry}
+                  className="flex items-center space-x-2 bg-slate-100 hover:bg-slate-200 text-slate-800 px-5 py-3 rounded-xl text-sm font-bold transition-all w-full sm:w-auto justify-center"
+                >
+                  <RefreshCw className="w-4 h-4 text-slate-600" />
+                  <span>Improve My Prompt & Retry Scenario</span>
+                </button>
+                <div className="flex items-center space-x-3 w-full sm:w-auto justify-end">
+                  <Link
+                    to="/training"
+                    className="px-4 py-3 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"
+                  >
+                    All Modules
+                  </Link>
+                  {nextScenario ? (
+                    <button
+                      onClick={handleNextScenario}
+                      className="flex items-center space-x-2 bg-gov-600 hover:bg-gov-700 text-white px-6 py-3 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all"
+                    >
+                      <span>Next Scenario</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  ) : (
+                    <Link
+                      to="/completion"
+                      className="flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all"
+                    >
+                      <Award className="w-4 h-4" />
+                      <span>Claim Certificate</span>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
           )}
 
         </div>

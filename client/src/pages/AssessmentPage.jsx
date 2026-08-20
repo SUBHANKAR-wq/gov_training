@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Award, CheckCircle2, AlertCircle, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Award, CheckCircle2, AlertCircle, ArrowRight, ShieldCheck, Sparkles, RotateCcw } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { scenariosData } from '../data/scenariosData';
 import { toolsData } from '../data/toolsData';
 import api from '../services/api';
@@ -20,6 +21,20 @@ export const AssessmentPage = () => {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [result, setResult] = useState(null);
+
+  // Restore saved assessment result if any
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('become_ai_smart_assessment_result');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.finalScore !== undefined) {
+          setResult(parsed);
+          setSubmitted(true);
+        }
+      }
+    } catch (e) {}
+  }, []);
 
   const handleSelect = (scenarioId, toolId) => {
     if (submitted) return;
@@ -47,12 +62,25 @@ export const AssessmentPage = () => {
       finalScore: total,
       passed: total >= 60,
       grade: total >= 90 ? 'High Distinction' : total >= 75 ? 'Distinction' : total >= 60 ? 'Certified' : 'Needs Review',
+      timestamp: new Date().toISOString(),
       details
     };
 
     setResult(res);
     setSubmitted(true);
+    try {
+      localStorage.setItem('become_ai_smart_assessment_result', JSON.stringify(res));
+    } catch (e) {}
     if (res.passed) playCorrect();
+  };
+
+  const handleRetake = () => {
+    setSubmitted(false);
+    setAnswers({});
+    setResult(null);
+    try {
+      localStorage.removeItem('become_ai_smart_assessment_result');
+    } catch (e) {}
   };
 
   return (
@@ -146,6 +174,19 @@ export const AssessmentPage = () => {
               <CheckCircle2 className="w-4 h-4" />
               <span>Status: {result.passed ? `PASSED (${result.grade})` : 'NEEDS RETRY'}</span>
             </div>
+            
+            {result.passed && (
+              <div className="pt-3">
+                <Link
+                  to="/completion?cert=final-capstone"
+                  className="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-6 py-3 rounded-xl shadow-lg hover:shadow-emerald-500/25 transition-all"
+                >
+                  <Award className="w-5 h-5" />
+                  <span>Claim & Download Master Capstone Certificate</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            )}
           </div>
 
           <div className="space-y-4">
@@ -162,13 +203,22 @@ export const AssessmentPage = () => {
             ))}
           </div>
 
-          <div className="flex justify-center space-x-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-200">
             <button
-              onClick={() => { setSubmitted(false); setAnswers({}); }}
-              className="px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs"
+              onClick={handleRetake}
+              className="flex items-center space-x-2 px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors"
             >
-              Retake Assessment
+              <RotateCcw className="w-4 h-4 text-slate-600" />
+              <span>Retake Assessment</span>
             </button>
+
+            <Link
+              to="/completion"
+              className="flex items-center space-x-2 px-6 py-3 rounded-xl bg-gov-600 hover:bg-gov-700 text-white font-bold text-xs shadow-sm transition-all"
+            >
+              <Award className="w-4 h-4" />
+              <span>View All 6 Certificates</span>
+            </Link>
           </div>
 
         </div>

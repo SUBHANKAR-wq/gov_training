@@ -29,7 +29,7 @@ export const AIToolsPage = () => {
           Curated AI Tools for Public Administration
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 max-w-3xl">
-          Detailed breakdown of all 8 core AI technologies: setup guides, capabilities, realistic government use cases, official links, and administrative safety boundaries.
+          Detailed breakdown of all 9 core AI technologies: setup guides, capabilities, realistic government use cases, official links, and administrative safety boundaries.
         </p>
       </div>
 
