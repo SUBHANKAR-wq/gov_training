@@ -161,7 +161,7 @@ export const api = {
     }
 
     // Context & Background
-    if (/(context\s*:|background\s*:|regarding|concerning|in the matter of|pertaining to|attached (order|file|document|table|data|circular|report)|revenue circle|sub-division|district|tehsil|block|panchayat|grievance)/i.test(p)) {
+    if (/(context\s*:|background\s*:|regarding|concerning|in the matter of|pertaining to|attached (government\s+)?(notification|order|file|document|table|data|circular|report|policy)|revenue circle|sub-division|district|tehsil|block|panchayat|grievance|scheme)/i.test(p)) {
       promptBreakdown.context.score = 10;
       promptBreakdown.context.present = true;
     }
@@ -195,7 +195,7 @@ export const api = {
     }
 
     // Verification
-    if (/(verify|cite sources?|reference sections?|ground in (the )?text|cross-check|statutory reference|check facts?|confirm against)/i.test(p)) {
+    if (/(verify|cite sources?|reference sections?|ground in (the )?text|cross-check|statutory reference|check facts?|confirm against|present in (the )?text|factual tone|human-in-the-loop|strict grounding)/i.test(p)) {
       promptBreakdown.verification.score = 15;
       promptBreakdown.verification.present = true;
     }

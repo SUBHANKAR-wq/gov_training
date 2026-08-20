@@ -72,7 +72,7 @@ class MockEvaluationService extends EvaluationService {
     }
 
     // 2. Context & Background (10 pts)
-    const hasContext = /(context\s*:|background\s*:|regarding|concerning|in the matter of|pertaining to|attached (order|file|document|table|data|circular|report)|revenue circle|sub-division|district|tehsil|block|panchayat|grievance)/i.test(p);
+    const hasContext = /(context\s*:|background\s*:|regarding|concerning|in the matter of|pertaining to|attached (government\s+)?(notification|order|file|document|table|data|circular|report|policy)|revenue circle|sub-division|district|tehsil|block|panchayat|grievance|scheme)/i.test(p);
     if (hasContext) {
       breakdown.context.score = 10;
       breakdown.context.present = true;
@@ -125,7 +125,7 @@ class MockEvaluationService extends EvaluationService {
     }
 
     // 7. Verification & Citations (15 pts)
-    const hasVerification = /(verify|cite sources?|reference sections?|ground in (the )?text|cross-check|statutory reference|check facts?|confirm against)/i.test(p);
+    const hasVerification = /(verify|cite sources?|reference sections?|ground in (the )?text|cross-check|statutory reference|check facts?|confirm against|present in (the )?text|factual tone|human-in-the-loop|strict grounding)/i.test(p);
     if (hasVerification) {
       breakdown.verification.score = 15;
       breakdown.verification.present = true;
