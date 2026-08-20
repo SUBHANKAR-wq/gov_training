@@ -12,10 +12,9 @@
     "server": "npm run start --prefix server",
     "server:dev": "npm run dev --prefix server",
     "client": "npm run dev --prefix client",
-    "build": "cd client && npm install && npx --yes vite build",
-    "postinstall": "cd client && npm install",
-    "vercel-build": "cd client && npm install && npx --yes vite build",
-    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
+    "build": "npm run build --workspace=client",
+    "vercel-build": "npm run build --workspace=client",
+    "install:all": "npm install",
     "seed": "npm run seed --prefix server"
   },
   "keywords": [
