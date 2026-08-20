@@ -8,16 +8,24 @@ export const PromptEditor = ({ prompt, setPrompt, onProceedToOutput, recommended
   return (
     <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 shadow-xs space-y-6">
       
-      <div>
+      <div className="space-y-2">
         <span className="bg-gov-100 text-gov-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
           Step 4: Prompt Engineering
         </span>
         <h3 className="text-lg font-bold text-slate-900 mt-1">
           Draft Your Administrative Prompt
         </h3>
-        <p className="text-xs text-slate-600 mt-0.5">
-          Write the exact prompt you will give to <strong>{recommendedToolName || 'the AI tool'}</strong> to accomplish the task.
-        </p>
+        
+        {/* Prominent Pop Callout for Core Instruction */}
+        <div className="inline-flex flex-wrap items-center gap-2 px-3.5 py-2.5 bg-gradient-to-r from-amber-500/10 via-amber-50 to-blue-50/50 border-2 border-amber-400 rounded-xl shadow-xs">
+          <span className="bg-amber-500 text-white text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider shadow-xs flex items-center gap-1 shrink-0">
+            <Sparkles className="w-3 h-3" />
+            CORE INSTRUCTION
+          </span>
+          <p className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+            Write the exact prompt you will give to <span className="text-gov-800 font-extrabold underline decoration-amber-500 decoration-2">{recommendedToolName || 'the AI tool'}</span> to accomplish the task.
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-[11px] font-semibold">
