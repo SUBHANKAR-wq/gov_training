@@ -2,6 +2,10 @@
   "name": "become-ai-smart",
   "version": "1.0.0",
   "description": "Become AI Smart - Work Better/Serve Better AI Tools Workshop by AIPNT Technologies Private Limited",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -9,13 +13,14 @@
     "server:dev": "npm run dev --prefix server",
     "client": "npm run dev --prefix client",
     "build": "npm run build --prefix client",
+    "vercel-build": "cd client && npm install && npm run build",
     "install:all": "npm install && npm install --prefix server && npm install --prefix client",
     "seed": "npm run seed --prefix server"
   },
   "keywords": [
     "ai-training",
-    "sub-collector",
-    "public-administration",
+    "administration",
+    "governance",
     "aipnt-technologies"
   ],
   "author": "AIPNT Technologies Private Limited",
