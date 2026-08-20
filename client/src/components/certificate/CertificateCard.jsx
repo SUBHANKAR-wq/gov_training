@@ -106,7 +106,7 @@ export const CertificateCard = ({
       <div 
         ref={certRef}
         id="printable-certificate"
-        className="certificate-print-area bg-white border-[6px] sm:border-[10px] border-[#0f1d38] rounded-xl p-6 sm:p-12 shadow-2xl text-center relative overflow-hidden max-w-4xl mx-auto text-slate-900"
+        className="certificate-print-area bg-white border-[4px] sm:border-[10px] border-[#0f1d38] rounded-xl p-3.5 sm:p-12 shadow-2xl text-center relative overflow-hidden max-w-4xl mx-auto text-slate-900"
         style={{
           boxShadow: '0 25px 50px -12px rgba(15, 29, 56, 0.25)',
           fontFamily: 'Inter, system-ui, -apple-system, sans-serif'

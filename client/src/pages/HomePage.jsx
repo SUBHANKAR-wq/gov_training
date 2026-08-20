@@ -40,40 +40,40 @@ export const HomePage = () => {
         {/* Glow BG */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gov-600/20 blur-[120px] rounded-full pointer-events-none" />
 
-        <div className="max-w-5xl mx-auto text-center space-y-6 relative z-10">
+        <div className="max-w-5xl mx-auto text-center space-y-4 sm:space-y-6 relative z-10">
           
-          <div className="inline-flex items-center space-x-2 bg-slate-800/80 border border-slate-700 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-300 shadow-inner">
+          <div className="inline-flex items-center space-x-2 bg-slate-800/80 border border-slate-700 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold text-slate-300 shadow-inner">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>AIPNT Technologies • AI Smart Workplace Simulator</span>
+            <span>AIPNT Technologies • AI Smart Simulator</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
+          <h1 className="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
             Become AI Smart <br />
             <span className="bg-gradient-to-r from-gov-400 via-gov-300 to-emerald-400 bg-clip-text text-transparent">
               Work Better / Serve Better
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal">
-            <strong>Learn AI. Choose the right tools. Work smarter. Serve better.</strong><br className="hidden sm:inline" />
+          <p className="text-xs sm:text-base lg:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal px-2">
+            <strong className="text-white">Learn AI. Choose the right tools. Work smarter. Serve better.</strong>{' '}
             A practical workplace simulation platform to understand, prompt, and evaluate AI tools across 25 realistic administrative and governance scenarios.
           </p>
 
           {/* Quick CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4 w-full max-w-md sm:max-w-none mx-auto">
             <Link
               to="/training"
-              className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-gov-600 hover:bg-gov-500 text-white px-8 py-4 rounded-xl text-sm font-extrabold shadow-lg shadow-gov-600/30 hover:scale-105 active:scale-95 transition-all"
+              className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-gov-600 hover:bg-gov-500 text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-xs sm:text-sm font-extrabold shadow-lg shadow-gov-600/30 hover:scale-105 active:scale-95 transition-all"
             >
-              <Play className="w-4 h-4 fill-white" />
+              <Play className="w-4 h-4 fill-white shrink-0" />
               <span>Launch Training Simulator</span>
             </Link>
 
             <Link
               to="/tools"
-              className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-8 py-4 rounded-xl text-sm font-bold transition-all"
+              className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-xs sm:text-sm font-bold transition-all"
             >
-              <BookOpen className="w-4 h-4 text-slate-400" />
+              <BookOpen className="w-4 h-4 text-slate-400 shrink-0" />
               <span>Explore AI Tools Library</span>
             </Link>
           </div>

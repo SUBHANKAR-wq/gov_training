@@ -65,12 +65,12 @@ export const Navbar = () => {
       </div>
 
       {/* 2. MAIN ORGANIZED NAVBAR */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-4">
           
           {/* LEFT: BRAND IDENTITY */}
-          <Link to="/" className="flex items-center space-x-3 shrink-0 group">
-            <div className="h-10 w-10 rounded-xl bg-white p-1 flex items-center justify-center border border-slate-200 shadow-sm group-hover:border-gov-500 transition-colors">
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 shrink-0 group">
+            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-white p-1 flex items-center justify-center border border-slate-200 shadow-sm group-hover:border-gov-500 transition-colors">
               <img 
                 src="/aipnt-logo.png" 
                 alt="AIPNT Technologies Logo" 
@@ -83,11 +83,11 @@ export const Navbar = () => {
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight leading-none group-hover:text-gov-700 transition-colors">
+                <span className="font-extrabold text-sm sm:text-lg text-slate-900 tracking-tight leading-none group-hover:text-gov-700 transition-colors">
                   Become AI Smart
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-none">
+              <p className="hidden sm:block text-[11px] text-slate-500 font-medium mt-0.5 leading-none">
                 Work Better • Serve Better
               </p>
             </div>
@@ -123,14 +123,14 @@ export const Navbar = () => {
           </nav>
 
           {/* RIGHT: CONTROL CLUSTER (AUDIO, SCORE & MOBILE) */}
-          <div className="flex items-center space-x-2.5 shrink-0">
+          <div className="flex items-center space-x-1.5 sm:space-x-2.5 shrink-0">
             
             {/* Audio Toggle Button */}
             <button
               onClick={toggleSound}
               title={soundEnabled ? 'Sound ON (Click to Mute)' : 'Sound MUTED (Click to Enable)'}
               aria-label="Toggle Sound"
-              className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
+              className={`flex items-center space-x-1 p-2 sm:px-3 sm:py-2 rounded-xl text-xs font-bold border transition-all ${
                 soundEnabled
                   ? 'bg-emerald-50 border-emerald-200 text-emerald-800 hover:bg-emerald-100 shadow-xs'
                   : 'bg-slate-100 border-slate-200 text-slate-500 hover:bg-slate-200'
@@ -138,13 +138,13 @@ export const Navbar = () => {
             >
               {soundEnabled ? (
                 <>
-                  <Volume2 className="w-4 h-4 text-emerald-600" />
-                  <span className="hidden sm:inline">Audio ON</span>
+                  <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
+                  <span className="hidden md:inline">Audio ON</span>
                 </>
               ) : (
                 <>
-                  <VolumeX className="w-4 h-4 text-slate-400" />
-                  <span className="hidden sm:inline">Muted</span>
+                  <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400" />
+                  <span className="hidden md:inline">Muted</span>
                 </>
               )}
             </button>
@@ -153,17 +153,17 @@ export const Navbar = () => {
             <Link
               to="/dashboard"
               title="View your AI Competency Dashboard"
-              className="flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm transition-all border border-slate-700 group"
+              className="flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-800 text-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-bold shadow-sm transition-all border border-slate-700 group"
             >
-              <Sparkles className="w-3.5 h-3.5 text-accent-gold group-hover:rotate-12 transition-transform" />
-              <span>Readiness:</span>
-              <span className="text-accent-gold font-extrabold">{overallReadinessScore}%</span>
+              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-accent-gold group-hover:rotate-12 transition-transform" />
+              <span className="hidden xs:inline text-[11px] sm:text-xs">Readiness:</span>
+              <span className="text-accent-gold font-extrabold text-xs">{overallReadinessScore}%</span>
             </Link>
 
             {/* Mobile Menu Hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="xl:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors"
+              className="xl:hidden p-1.5 sm:p-2 rounded-xl text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
