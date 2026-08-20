@@ -1,11 +1,8 @@
-﻿{
-  "buildCommand": "cd client && npm install && npx --yes vite build",
+﻿
+{
+  "version": 2,
+  "buildCommand": "npm run build",
   "outputDirectory": "client/dist",
-  "framework": "vite",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
+  "framework": "vite"
 }
+
