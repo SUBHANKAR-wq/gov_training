@@ -203,7 +203,7 @@ export const api = {
     const rawPromptScore = Math.min(100, Object.values(promptBreakdown).reduce((acc, item) => acc + item.score, 0));
     const promptScore = Math.round((rawPromptScore / 100) * 30);
 
-    // 2. Dynamic Output Rubric Evaluation
+    // 2. Dynamic Content-Aware Output Rubric Evaluation
     const o = (output || '').toLowerCase().trim();
     const outputWords = o.split(/\s+/).filter(Boolean);
     const outputWordCount = outputWords.length;
@@ -216,22 +216,114 @@ export const api = {
       requiredInfo: { name: 'Inclusion of Specific Figures & Dates', max: 15, score: 0 }
     };
 
-    if (/[\n:\*\-#]|\d\./.test(output) && outputWordCount > 25) outputBreakdown.structure.score = 15;
-    else if (outputWordCount > 10) outputBreakdown.structure.score = 8;
+    const idealText = (scenario?.ideal_output || '').toLowerCase();
+    const sourceText = (scenario?.practice_input?.content || '').toLowerCase();
+    const taskText = (scenario?.task || '').toLowerCase();
 
-    if (/\d+|rs|%|section|date|tehsil|officer|magistrate|district/i.test(o)) outputBreakdown.requiredInfo.score = 15;
-    else if (outputWordCount > 15) outputBreakdown.requiredInfo.score = 8;
+    // A. Clarity & Heading Structure (Max: 15)
+    const hasHeadings = /[\n\r](\d+[\.\)]|[A-Za-z\s]+:|\*\*|##|[-*•]\s+)/.test(output);
+    const hasMultipleSections = (output.match(/\n\s*\n/g) || []).length >= 1 || (output.match(/[-*•]\s+/g) || []).length >= 2;
+    if (hasHeadings && hasMultipleSections && outputWordCount >= 25) {
+      outputBreakdown.structure.score = 15;
+    } else if (hasHeadings || hasMultipleSections || outputWordCount >= 18) {
+      outputBreakdown.structure.score = 12;
+    } else if (outputWordCount >= 10) {
+      outputBreakdown.structure.score = 8;
+    } else {
+      outputBreakdown.structure.score = 4;
+    }
 
-    if (outputWordCount >= 40) outputBreakdown.relevance.score = 20;
-    else if (outputWordCount >= 20) outputBreakdown.relevance.score = 14;
-    else if (outputWordCount >= 8) outputBreakdown.relevance.score = 8;
+    // B. Inclusion of Specific Figures & Dates (Max: 15)
+    const sourceNumbers = (sourceText.match(/(\d+([\.,]\d+)?%?|rs\.?|₹|\b(january|february|march|april|may|june|july|august|september|october|november|december|hectares?|ha|acres?|lakh|crore)\b)/gi) || []);
+    const uniqueSourceNumbers = Array.from(new Set(sourceNumbers.map(s => s.toLowerCase())));
+    
+    let matchedNumbersCount = 0;
+    uniqueSourceNumbers.forEach(num => {
+      if (o.includes(num)) matchedNumbersCount++;
+    });
 
-    if (outputWordCount >= 50) outputBreakdown.completeness.score = 25;
-    else if (outputWordCount >= 25) outputBreakdown.completeness.score = 18;
-    else if (outputWordCount >= 8) outputBreakdown.completeness.score = 10;
+    const numberCoverage = uniqueSourceNumbers.length > 0 ? (matchedNumbersCount / uniqueSourceNumbers.length) : 1;
+    if (numberCoverage >= 0.55 || matchedNumbersCount >= 4) {
+      outputBreakdown.requiredInfo.score = 15;
+    } else if (numberCoverage >= 0.3 || matchedNumbersCount >= 2) {
+      outputBreakdown.requiredInfo.score = 12;
+    } else if (matchedNumbersCount >= 1 || outputWordCount >= 20) {
+      outputBreakdown.requiredInfo.score = 9;
+    } else {
+      outputBreakdown.requiredInfo.score = 4;
+    }
 
-    if (outputWordCount >= 30) outputBreakdown.accuracy.score = 25;
-    else if (outputWordCount >= 10) outputBreakdown.accuracy.score = 15;
+    // C. Relevance to Scenario Task (Max: 20)
+    const titleKeywords = (scenario?.title || '').toLowerCase().split(/\s+/).filter(w => w.length > 3);
+    const taskKeywords = taskText.split(/\s+/).filter(w => w.length > 4);
+    const relevantKeyTerms = Array.from(new Set([...titleKeywords, ...taskKeywords]));
+    
+    let matchedTaskTerms = 0;
+    relevantKeyTerms.forEach(term => {
+      if (o.includes(term)) matchedTaskTerms++;
+    });
+
+    const taskCoverage = relevantKeyTerms.length > 0 ? (matchedTaskTerms / relevantKeyTerms.length) : 1;
+    if (taskCoverage >= 0.45 && outputWordCount >= 30) {
+      outputBreakdown.relevance.score = 20;
+    } else if (taskCoverage >= 0.25 || outputWordCount >= 18) {
+      outputBreakdown.relevance.score = 16;
+    } else if (outputWordCount >= 10) {
+      outputBreakdown.relevance.score = 11;
+    } else {
+      outputBreakdown.relevance.score = 5;
+    }
+
+    // D. Factual Accuracy & Grounding (Max: 25)
+    const sourceKeyPhrases = sourceText
+      .split(/[\n,;.]/)
+      .map(s => s.trim().toLowerCase())
+      .filter(s => s.length > 8 && s.length < 50);
+
+    let matchedPhrasesCount = 0;
+    sourceKeyPhrases.forEach(phrase => {
+      const significantWords = phrase.split(/\s+/).filter(w => w.length > 4);
+      if (significantWords.length >= 2 && significantWords.every(w => o.includes(w))) {
+        matchedPhrasesCount++;
+      }
+    });
+
+    const phraseRatio = sourceKeyPhrases.length > 0 ? (matchedPhrasesCount / sourceKeyPhrases.length) : 0.5;
+    if (phraseRatio >= 0.5 || (matchedPhrasesCount >= 3 && outputWordCount >= 35)) {
+      outputBreakdown.accuracy.score = 25;
+    } else if (phraseRatio >= 0.25 || matchedPhrasesCount >= 2) {
+      outputBreakdown.accuracy.score = 20;
+    } else if (outputWordCount >= 15) {
+      outputBreakdown.accuracy.score = 15;
+    } else {
+      outputBreakdown.accuracy.score = 8;
+    }
+
+    // E. Completeness of Key Points (Max: 25)
+    const idealSections = idealText
+      .split(/(\d+\.\s+|\n\s*[-*•]\s+)/)
+      .map(s => s.trim())
+      .filter(s => s.length > 15);
+
+    let coveredSections = 0;
+    idealSections.forEach(sec => {
+      const wordsInSec = sec.split(/\s+/).filter(w => w.length > 4);
+      const matchCount = wordsInSec.filter(w => o.includes(w)).length;
+      if (wordsInSec.length > 0 && (matchCount / wordsInSec.length) >= 0.35) {
+        coveredSections++;
+      }
+    });
+
+    const sectionCoverage = idealSections.length > 0 ? (coveredSections / idealSections.length) : (outputWordCount > 40 ? 0.75 : 0.4);
+    if (sectionCoverage >= 0.7) {
+      outputBreakdown.completeness.score = 25;
+    } else if (sectionCoverage >= 0.45) {
+      outputBreakdown.completeness.score = 19;
+    } else if (sectionCoverage >= 0.25 || outputWordCount >= 25) {
+      outputBreakdown.completeness.score = 14;
+    } else {
+      outputBreakdown.completeness.score = 8;
+    }
 
     const rawOutputScore = Math.min(100, Math.max(20, Object.values(outputBreakdown).reduce((acc, item) => acc + item.score, 0)));
     const outputScore = Math.round((rawOutputScore / 100) * 30);
