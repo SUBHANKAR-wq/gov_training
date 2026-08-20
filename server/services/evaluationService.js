@@ -56,62 +56,85 @@ class MockEvaluationService extends EvaluationService {
       };
     }
 
-    if (/Administrative Officer|officer|magistrate|assistant|tahsildar|admin|expert|consultant/i.test(p)) {
+    // 1. Role & Persona (10 pts) - Requires explicit personification directive
+    const hasRoleDirective = /(act as|you are|assume the role|as an? (administrative|revenue|executive|public|government|ai|expert|consultant|officer|analyst|assistant)|role\s*:|persona\s*:)/i.test(p);
+    const hasAdminPersona = /(administrative officer|executive magistrate|sdm|sub-divisional magistrate|tahsildar|public admin|revenue officer|data analyst|policy analyst)/i.test(p);
+
+    if (hasRoleDirective && hasAdminPersona) {
       breakdown.role.score = 10;
       breakdown.role.present = true;
-    } else if (/you are|act as|as an/i.test(p)) {
-      breakdown.role.score = 6;
+    } else if (hasRoleDirective) {
+      breakdown.role.score = 5;
       breakdown.role.present = true;
+    } else {
+      breakdown.role.score = 0;
+      breakdown.role.present = false;
     }
 
-    if (/government|scheme|order|circular|office|sub-division|district|odisha|revenue|grievance|village|public|paddy/i.test(p)) {
+    // 2. Context & Background (10 pts)
+    const hasContext = /(context\s*:|background\s*:|regarding|concerning|in the matter of|pertaining to|attached (order|file|document|table|data|circular|report)|revenue circle|sub-division|district|tehsil|block|panchayat|grievance)/i.test(p);
+    if (hasContext) {
       breakdown.context.score = 10;
       breakdown.context.present = true;
-    } else if (wordCount > 15) {
-      breakdown.context.score = 5;
-      breakdown.context.present = true;
+    } else {
+      breakdown.context.score = 0;
+      breakdown.context.present = false;
     }
 
-    if (/draft|summarize|extract|analyze|prepare|create|compare|provide|generate|explain|review/i.test(p)) {
+    // 3. Specific Task Definition (15 pts)
+    const hasTask = /(draft|summarize|extract|analyze|prepare|create|compare|audit|calculate|synthesize|generate|identify|itemise|itemize|review)/i.test(p);
+    if (hasTask) {
       breakdown.task.score = 15;
       breakdown.task.present = true;
     } else {
-      breakdown.task.score = 7;
+      breakdown.task.score = 0;
+      breakdown.task.present = false;
     }
 
-    const hasNumbersOrDates = /\d{1,4}|date|section|plot|rupees|rs|lakh|crore|deadline|schedule|october|november|december|may|tehsil/i.test(p);
-    if (hasNumbersOrDates && wordCount > 20) {
+    // 4. Specific Requirements & Data (20 pts)
+    const hasNumbersOrDates = /\d{1,4}|date|section|plot|rupees|rs\.?|lakh|crore|deadline|schedule|october|november|december|may|target|metric|kpi/i.test(p);
+    if (hasNumbersOrDates && wordCount > 15) {
       breakdown.specifics.score = 20;
       breakdown.specifics.present = true;
-    } else if (hasNumbersOrDates || wordCount > 15) {
-      breakdown.specifics.score = 12;
+    } else if (hasNumbersOrDates) {
+      breakdown.specifics.score = 10;
       breakdown.specifics.present = true;
     } else {
-      breakdown.specifics.score = 5;
+      breakdown.specifics.score = 0;
+      breakdown.specifics.present = false;
     }
 
-    if (/table|bullet|headings|numbered|markdown|matrix|template|sections|1\.|2\.|point|slide/i.test(p)) {
+    // 5. Output Structure & Format (15 pts)
+    const hasFormat = /(table|markdown|bullet points?|numbered list|headings?|columns?|matrix|template|briefing note|executive summary|slide outline|1\.|2\.)/i.test(p);
+    if (hasFormat) {
       breakdown.format.score = 15;
       breakdown.format.present = true;
-    } else if (wordCount > 25) {
-      breakdown.format.score = 8;
+    } else {
+      breakdown.format.score = 0;
+      breakdown.format.present = false;
     }
 
-    if (/only|do not|strict|formal|legal|no hallucination|preserve|without adding|decorum|confidential/i.test(p)) {
+    // 6. Constraints & Guardrails (15 pts)
+    const hasConstraints = /(only (include|use)|do not (hallucinate|assume|extrapolate|invent|add)|strict|without (adding|assuming)|confidential|preserve tone|no assumptions|boundaries)/i.test(p);
+    if (hasConstraints) {
       breakdown.constraints.score = 15;
       breakdown.constraints.present = true;
-    } else if (wordCount > 30) {
-      breakdown.constraints.score = 7;
+    } else {
+      breakdown.constraints.score = 0;
+      breakdown.constraints.present = false;
     }
 
-    if (/verify|source|grounded|citation|check|confirm|cross-check|reference/i.test(p)) {
+    // 7. Verification & Citations (15 pts)
+    const hasVerification = /(verify|cite sources?|reference sections?|ground in (the )?text|cross-check|statutory reference|check facts?|confirm against)/i.test(p);
+    if (hasVerification) {
       breakdown.verification.score = 15;
       breakdown.verification.present = true;
-    } else if (wordCount > 35) {
-      breakdown.verification.score = 6;
+    } else {
+      breakdown.verification.score = 0;
+      breakdown.verification.present = false;
     }
 
-    const totalScore = Math.min(100, Math.max(25, Object.values(breakdown).reduce((acc, item) => acc + item.score, 0)));
+    const totalScore = Math.min(100, Object.values(breakdown).reduce((acc, item) => acc + item.score, 0));
 
     return {
       score: totalScore,
@@ -119,7 +142,7 @@ class MockEvaluationService extends EvaluationService {
       breakdown,
       feedback: totalScore >= 80 
         ? 'Excellent prompt! Clear persona, explicit task boundaries, format specifications, and verification guardrails.'
-        : 'Good effort. For a top score, explicitly state the official role (e.g. Administrative Officer), specify output structure (e.g. Markdown table), and add verification constraints.'
+        : 'Review your prompt against the 5-Part Formula. Make sure to explicitly define the AI persona (e.g. "Act as an Administrative Officer"), output structure (e.g. Markdown table), and verification constraints.'
     };
   }
 
