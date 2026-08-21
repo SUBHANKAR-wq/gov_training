@@ -102,11 +102,11 @@ export const CertificateCard = ({
   return (
     <div className="space-y-6">
       
-      {/* 1. PRINT-OPTIMIZED CERTIFICATE CONTAINER */}
+      {/* 1. PRINT-OPTIMIZED A4 CERTIFICATE CONTAINER */}
       <div 
         ref={certRef}
         id="printable-certificate"
-        className="certificate-print-area bg-white border-[4px] sm:border-[10px] border-[#0f1d38] rounded-xl p-3.5 sm:p-12 shadow-2xl text-center relative overflow-hidden max-w-4xl mx-auto text-slate-900"
+        className="certificate-print-area bg-white border-[6px] sm:border-[10px] border-[#0f1d38] rounded-xl sm:rounded-2xl p-5 sm:p-10 shadow-2xl text-center relative overflow-hidden max-w-3xl sm:max-w-4xl mx-auto text-slate-900 flex flex-col justify-between"
         style={{
           boxShadow: '0 25px 50px -12px rgba(15, 29, 56, 0.25)',
           fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
@@ -114,140 +114,157 @@ export const CertificateCard = ({
       >
         {/* Subtle Watermark BG */}
         <div className="absolute inset-0 opacity-[0.035] flex items-center justify-center pointer-events-none">
-          <img src="/aipnt-logo.png" alt="" className="w-80 sm:w-[480px] object-contain" />
+          <img src="/aipnt-logo.png" alt="" className="w-80 sm:w-[460px] object-contain" />
         </div>
 
         {/* Decorative Inner Thin Border */}
         <div className="absolute inset-2 sm:inset-3 border border-slate-300 rounded-lg pointer-events-none" />
 
-        {/* Top AIPNT Logo */}
-        <div className="flex justify-center mb-3 relative z-10">
-          <div className="h-14 sm:h-16 w-14 sm:w-16 bg-white p-1 rounded-lg flex items-center justify-center border border-slate-200 shadow-xs">
-            <img src="/aipnt-logo.png" alt="AIPNT Logo" className="h-full w-full object-contain" />
-          </div>
-        </div>
-
-        {/* Tagline */}
-        <div className="relative z-10 my-1.5">
-          <p className="text-[10px] sm:text-xs font-bold text-slate-800 tracking-[0.2em] sm:tracking-[0.25em] uppercase">
-            Become AI Smart - Work Better • Serve Better
-          </p>
-        </div>
-
-        {/* Main Certificate Title */}
-        <div className="relative z-10 my-3 sm:my-4">
-          <h2 className="text-xl sm:text-3xl font-black text-[#0e2756] tracking-tight uppercase leading-tight font-serif">
-            {config.title}
-          </h2>
-        </div>
-
-        {/* "THIS IS TO CERTIFY THAT" */}
-        <div className="relative z-10 my-2 sm:my-3">
-          <p className="text-[10px] sm:text-xs font-semibold text-slate-500 tracking-[0.25em] uppercase">
-            THIS IS TO CERTIFY THAT
-          </p>
-        </div>
-
-        {/* Recipient Officer Name */}
-        <div className="relative z-10 my-3 sm:my-4">
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight underline decoration-slate-900 decoration-2 underline-offset-8 font-sans">
-            {userName || 'Officer / Staff Member'}
-          </h1>
-        </div>
-
-        {/* Citation / Achievement Paragraph */}
-        <div className="relative z-10 max-w-2xl mx-auto my-4 sm:my-6">
-          <p className="text-xs sm:text-[13px] text-slate-700 leading-relaxed font-normal text-justify sm:text-center">
-            {config.description}
-          </p>
-        </div>
-
-        {/* 3-Box Metrics Row */}
-        <div className="relative z-10 grid grid-cols-3 gap-2 sm:gap-4 max-w-xl mx-auto my-5 sm:my-7">
-          
-          <div className="bg-[#f3f7fb] border border-slate-200/90 rounded-xl p-2.5 sm:p-3.5 shadow-2xs">
-            <span className="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
-              ASSESSMENT SCORE
-            </span>
-            <span className="text-sm sm:text-lg font-black text-[#0f2348]">
-              {displayScore}
-            </span>
-          </div>
-
-          <div className="bg-[#f3f7fb] border border-slate-200/90 rounded-xl p-2.5 sm:p-3.5 shadow-2xs">
-            <span className="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
-              SCENARIOS PASSED
-            </span>
-            <span className="text-sm sm:text-lg font-black text-[#0f2348]">
-              {displayScenarios}
-            </span>
-          </div>
-
-          <div className="bg-[#f3f7fb] border border-slate-200/90 rounded-xl p-2.5 sm:p-3.5 shadow-2xs">
-            <span className="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
-              AI RATING
-            </span>
-            <span className="text-xs sm:text-base font-black text-[#b45309] uppercase tracking-wide">
-              {config.rating}
-            </span>
-          </div>
-
-        </div>
-
-        {/* Verification Metadata, Circular Stamp & Authorized Signatory */}
-        <div className="relative z-10 pt-4 sm:pt-6 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-3 items-center gap-4 text-left">
-          
-          {/* Left: Issue Date & Program Credentials */}
-          <div className="space-y-1 text-xs sm:text-sm text-slate-700">
-            <div>
-              <span className="font-bold text-slate-900 font-sans">Issue Date:</span> {date}
-            </div>
-            <div className="text-[11px] sm:text-xs text-slate-500 font-medium">
-              AIPNT Certified AI Program
+        {/* Certificate Top Section */}
+        <div>
+          {/* Top AIPNT Logo */}
+          <div className="flex justify-center mb-2.5 relative z-10">
+            <div className="h-12 sm:h-16 w-12 sm:w-16 bg-white p-1 rounded-lg flex items-center justify-center border border-slate-200 shadow-xs">
+              <img src="/aipnt-logo.png" alt="AIPNT Logo" className="h-full w-full object-contain" />
             </div>
           </div>
 
-          {/* Center: Circular Stamp */}
-          <div className="flex justify-center my-2 sm:my-0">
-            <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full border-2 border-dashed border-[#0f2a5c] bg-white flex flex-col items-center justify-center p-1 text-[#0f2a5c] shadow-xs rotate-[-6deg]">
-              <span className="text-[7px] sm:text-[8px] font-black uppercase tracking-wider">AI SMART</span>
-              <Award className="w-4 sm:w-5 h-4 sm:h-5 my-0.5 text-gov-600" />
-              <span className="text-[6px] sm:text-[7px] font-bold uppercase tracking-widest text-slate-600">VERIFIED</span>
-            </div>
-          </div>
-
-          {/* Right: Signature */}
-          <div className="text-center sm:text-right">
-            <div className="w-36 sm:w-44 border-b-2 border-slate-800 mb-1 ml-auto sm:ml-auto mr-auto sm:mr-0"></div>
-            <h4 className="text-xs sm:text-sm font-bold text-slate-900 font-serif">
-              Lead AI Trainer / Evaluator
-            </h4>
-            <p className="text-[10px] sm:text-[11px] font-semibold text-slate-600">
-              Authorized Signatory & AI Lead
-            </p>
-            <p className="text-[9px] sm:text-[10px] font-medium text-slate-500">
-              AIPNT Technologies Private Limited
+          {/* Tagline */}
+          <div className="relative z-10 my-1">
+            <p className="text-[9px] sm:text-xs font-bold text-slate-800 tracking-[0.2em] sm:tracking-[0.25em] uppercase">
+              Become AI Smart • Work Better • Serve Better
             </p>
           </div>
 
+          {/* Main Certificate Title */}
+          <div className="relative z-10 my-2.5 sm:my-3.5">
+            <h2 className="text-lg sm:text-3xl font-black text-[#0e2756] tracking-tight uppercase leading-tight font-serif">
+              {config.title}
+            </h2>
+          </div>
+
+          {/* "THIS IS TO CERTIFY THAT" */}
+          <div className="relative z-10 my-1.5 sm:my-2.5">
+            <p className="text-[9px] sm:text-xs font-semibold text-slate-500 tracking-[0.25em] uppercase">
+              THIS IS TO CERTIFY THAT
+            </p>
+          </div>
+
+          {/* Recipient Officer Name */}
+          <div className="relative z-10 my-2 sm:my-3">
+            <h1 className="text-xl sm:text-3xl font-extrabold text-slate-900 tracking-tight underline decoration-slate-900 decoration-2 underline-offset-8 font-sans">
+              {userName || 'Officer / Staff Member'}
+            </h1>
+          </div>
+
+          {/* Citation / Achievement Paragraph */}
+          <div className="relative z-10 max-w-2xl mx-auto my-3 sm:my-4 px-2">
+            <p className="text-[11px] sm:text-[13px] text-slate-700 leading-relaxed font-normal text-justify sm:text-center">
+              {config.description}
+            </p>
+          </div>
+
+          {/* 3-Box Metrics Row */}
+          <div className="relative z-10 cert-metrics-grid grid grid-cols-3 gap-2 sm:gap-4 max-w-xl mx-auto my-3 sm:my-5">
+            
+            <div className="bg-[#f3f7fb] border border-slate-200/90 rounded-xl p-2 sm:p-3 shadow-2xs">
+              <span className="text-[8px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
+                ASSESSMENT SCORE
+              </span>
+              <span className="text-xs sm:text-base font-black text-[#0f2348]">
+                {displayScore}
+              </span>
+            </div>
+
+            <div className="bg-[#f3f7fb] border border-slate-200/90 rounded-xl p-2 sm:p-3 shadow-2xs">
+              <span className="text-[8px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
+                SCENARIOS PASSED
+              </span>
+              <span className="text-xs sm:text-base font-black text-[#0f2348]">
+                {displayScenarios}
+              </span>
+            </div>
+
+            <div className="bg-[#f3f7fb] border border-slate-200/90 rounded-xl p-2 sm:p-3 shadow-2xs">
+              <span className="text-[8px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
+                AI RATING
+              </span>
+              <span className="text-[10px] sm:text-sm font-black text-[#b45309] uppercase tracking-wide">
+                {config.rating}
+              </span>
+            </div>
+
+          </div>
         </div>
 
-        {/* Disclaimer Note */}
-        <div className="relative z-10 pt-4 mt-4 border-t border-slate-100 text-[9px] sm:text-[10px] text-slate-400 leading-normal">
-          Disclaimer: This certificate confirms completion of practical AI Smart workplace simulations. All training scenarios are structured simulations. Issued by <strong>AIPNT Technologies Private Limited</strong>.
+        {/* Certificate Bottom Section: Verification Metadata, Circular Stamp & Trainer Signatory */}
+        <div>
+          <div className="relative z-10 pt-3 sm:pt-4 border-t border-slate-200 cert-bottom-grid grid grid-cols-1 sm:grid-cols-3 items-end gap-3 text-left">
+            
+            {/* Left: Issue Date, Program Credentials & Verification ID */}
+            <div className="space-y-1 text-xs text-slate-700 pb-1">
+              <div>
+                <span className="font-bold text-slate-900 font-sans">Issue Date:</span> {date}
+              </div>
+              <div className="text-[10px] sm:text-xs text-slate-500 font-medium">
+                AIPNT Certified AI Smart Program
+              </div>
+              <div className="text-[9px] sm:text-[10px] font-mono text-slate-400 font-bold uppercase tracking-wider">
+                CERT ID: {config.certCode || 'AIPNT-MAST-2026'}
+              </div>
+            </div>
+
+            {/* Center: Circular Verified Seal */}
+            <div className="flex justify-center my-1 sm:my-0">
+              <div className="w-14 sm:w-18 h-14 sm:h-18 rounded-full border-2 border-dashed border-[#0f2a5c] bg-white flex flex-col items-center justify-center p-1 text-[#0f2a5c] shadow-xs rotate-[-6deg]">
+                <span className="text-[6px] sm:text-[7px] font-black uppercase tracking-wider">AI SMART</span>
+                <Award className="w-3.5 sm:w-4.5 h-3.5 sm:h-4.5 my-0.5 text-gov-600" />
+                <span className="text-[5px] sm:text-[6px] font-bold uppercase tracking-widest text-slate-600">VERIFIED</span>
+              </div>
+            </div>
+
+            {/* Right: Designated Trainer Signature Space */}
+            <div className="text-center sm:text-right flex flex-col items-center sm:items-end justify-end">
+              {/* Dedicated space for physical pen signature or seal */}
+              <div className="h-10 sm:h-12 w-36 sm:w-44 flex items-end justify-center sm:justify-end pb-1 select-none">
+                <span className="text-[8px] sm:text-[9px] text-slate-300 italic font-serif">
+                  ( Trainer's Signature / Seal )
+                </span>
+              </div>
+              <div className="w-36 sm:w-44 border-b-2 border-slate-800 mb-1"></div>
+              <h4 className="text-[11px] sm:text-xs font-bold text-slate-900 font-serif">
+                Lead AI Trainer / Evaluator
+              </h4>
+              <p className="text-[9px] sm:text-[10px] font-semibold text-slate-600">
+                Authorized Signatory & AI Lead
+              </p>
+              <p className="text-[8px] sm:text-[9px] font-medium text-slate-500">
+                AIPNT Technologies Private Limited
+              </p>
+            </div>
+
+          </div>
+
+          {/* Disclaimer Note */}
+          <div className="relative z-10 pt-2.5 mt-2.5 border-t border-slate-100 text-[8px] sm:text-[9px] text-slate-400 leading-normal">
+            Disclaimer: This certificate confirms completion of practical AI Smart workplace simulations. All training scenarios are structured simulations. Issued by <strong>AIPNT Technologies Private Limited</strong>.
+          </div>
         </div>
 
       </div>
 
       {/* 2. PRINT / EXPORT CONTROLS */}
-      <div className="flex flex-wrap justify-center items-center gap-3 pt-2 no-print">
+      <div className="flex flex-col items-center justify-center gap-2 pt-2 no-print">
         <button
           onClick={handlePrint}
-          className="flex items-center space-x-2 bg-[#0f1d38] hover:bg-[#1e345e] text-white px-6 py-3 rounded-xl text-xs sm:text-sm font-bold shadow-lg hover:scale-105 active:scale-95 transition-all"
+          className="flex items-center space-x-2 bg-[#0f1d38] hover:bg-[#1e345e] text-white px-6 py-3 rounded-xl text-xs sm:text-sm font-bold shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
         >
           <Printer className="w-4 h-4" />
-          <span>Print / Download PDF Certificate</span>
+          <span>Save as PDF / Print Certificate (A4 Single Page)</span>
         </button>
+        <p className="text-[11px] text-slate-500 text-center font-medium">
+          Formatted for A4 Single-Page with designated space for Trainer's signature & seal.
+        </p>
       </div>
 
     </div>
